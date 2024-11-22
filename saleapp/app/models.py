@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Enum
 from sqlalchemy.orm import relationship
-from saleapp.app import db, app
-
+from cong_nghe_phan_mem.saleapp.app import db, app
+from enum import Enum as RoleEnum
+import hashlib
 
 class category(db.Model):
     # __tablename__ = "category" tao ten cho bang khong thi bang se lay ten ham
@@ -19,29 +20,42 @@ class Product(db.Model):
     image = Column(String(200))
     category_id = Column(Integer, ForeignKey(category.id), nullable=False)
 
+class User_Role(RoleEnum):
+    ADMIN = 1
+    USER = 2
+
+class User(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(50))
+    username = Column(String(50), nullable=False, unique=True)
+    password = Column(String(100), nullable=False)
+    avater = Column(String(100), default='https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg')
+    user_role = Column(Enum(User_Role), default=User_Role.USER)
 
 if __name__ == '__main__':
     with app.app_context():
-        # db.create_all() # tao bang moi thi moi dung lenh nay create table
+        #db.create_all() # tao bang moi thi moi dung lenh nay create table
         # c1 = category(name='Mobile')
         # c2 = category(name='Tablet')
         # c3 = category(name='Laptop')
-        c4 = category(name='printer')
-        db.session.add(c4)
-        db.session.commit()
+        # c4 = category(name='printer')
+        # db.session.add_all([c2, c3, c4])
+        # db.session.commit()
         # db.session.add_all([c1, c2, c3]) #insert into
         # db.session.commit()
-
+        # user = User(name='admin', username='admin', password=str(hashlib.md5('123456'.encode('utf-8')).hexdigest()))
+        # db.session.add(user)
+        # db.session.commit()
         products = [{
-            "id": 1,
-            "name": "iPhone 7 Plus",
+            "id": 9,
+            "name": "iPhone X",
             "description": "Apple, 32GB, RAM: 3GB, iOS13",
             "price": 17000000,
             "image":
                 "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647056401/ipmsmnxjydrhpo21xrd8.jpg",
             "category_id": 1
         }, {
-            "id": 2,
+            "id": 10,
             "name": "iPad Pro 2020",
             "description": "Apple, 128GB, RAM: 6GB",
             "price": 37000000,
@@ -49,15 +63,15 @@ if __name__ == '__main__':
                 "https://res.cloudinary.com/dxxwcby8l/image/upload/v1646729533/zuur9gzztcekmyfenkfr.jpg",
             "category_id": 2
         }, {
-            "id": 3,
-            "name": "Galaxy Note 10 Plus",
+            "id": 11,
+            "name": "Galaxy 10 Plus",
             "description": "Samsung, 64GB, RAML: 6GB",
             "price": 24000000,
             "image":
                 "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
             "category_id": 3
         }, {
-            "id": 4,
+            "id": 12,
             "name": "Galaxy Note 10 Plus",
             "description": "Samsung, 64GB, RAML: 6GB",
             "price": 24000000,
@@ -65,7 +79,7 @@ if __name__ == '__main__':
                 "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
             "category_id": 1
         }, {
-            "id": 5,
+            "id": 13,
             "name": "Galaxy Note 10 Plus",
             "description": "Samsung, 64GB, RAML: 6GB",
             "price": 24000000,
@@ -73,7 +87,7 @@ if __name__ == '__main__':
                 "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
             "category_id": 2
         }, {
-            "id": 6,
+            "id": 14,
             "name": "Galaxy Note 10 Plus",
             "description": "Samsung, 64GB, RAML: 6GB",
             "price": 24000000,
@@ -81,7 +95,7 @@ if __name__ == '__main__':
                 "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
             "category_id": 3
         }, {
-            "id": 7,
+            "id": 15,
             "name": "Galaxy Note 10 Plus",
             "description": "Samsung, 64GB, RAML: 6GB",
             "price": 24000000,
@@ -89,7 +103,7 @@ if __name__ == '__main__':
                 "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
             "category_id": 1
         }, {
-            "id": 8,
+            "id": 16,
             "name": "Galaxy Note 10 Plus",
             "description": "Samsung, 64GB, RAML: 6GB",
             "price": 24000000,
